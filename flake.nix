@@ -29,7 +29,6 @@
     in
       pkgs.mkShell {
         packages = [
-          pkgs.d-spy
           pkgs.pdm
           pythonEnv
         ];
