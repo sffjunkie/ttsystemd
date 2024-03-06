@@ -37,9 +37,6 @@
     packages.x86_64-linux.default = let
       attrs = project.renderers.buildPythonPackage {inherit python;};
     in
-      python.pkgs.buildPythonPackage (attrs
-        // {
-          env.CUSTOM_ENVVAR = "hello";
-        });
+      python.pkgs.buildPythonPackage attrs;
   };
 }
