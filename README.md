@@ -19,6 +19,6 @@ Coming soon is
 ![Systemd Defaults](https://github.com/sffjunkie/ttsystemd/raw/main/systemd_defaults.png?raw=true)
 ![Systemd Timestamps](https://github.com/sffjunkie/ttsystemd/raw/main/systemd_timestamps.png?raw=true)
 
-## System Units
+## Unit List
 
 ![System Units](https://github.com/sffjunkie/ttsystemd/raw/main/system_units.png?raw=true)
