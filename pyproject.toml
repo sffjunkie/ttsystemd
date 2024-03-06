@@ -27,6 +27,10 @@ classifiers = [
     "Topic :: System :: Monitoring",
 ]
 
+[project.urls]
+Homepage = "https://github.com/sffjunkie/ttsystemd"
+Issues = "https://github.com/sffjunkie/ttsystemd/issues"
+
 [build-system]
 requires = ["pdm-backend"]
 build-backend = "pdm.backend"
