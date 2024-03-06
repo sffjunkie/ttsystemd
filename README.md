@@ -15,4 +15,4 @@ Coming soon is
 
 ## Systemd Information
 
-![Systemd Information Tab](https://github.com/sffjunkie/ttsystemd/raw/master/systemd_overview.png)
+![Systemd Information Tab](https://github.com/sffjunkie/ttsystemd/raw/main/systemd_overview.png?raw=true)
