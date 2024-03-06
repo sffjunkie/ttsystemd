@@ -30,8 +30,6 @@
       pkgs.mkShell {
         packages = [
           pkgs.d-spy
-          pkgs.meson
-          pkgs.ninja
           pkgs.pdm
           pythonEnv
         ];
