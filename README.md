@@ -16,3 +16,9 @@ Coming soon is
 ## Systemd Information
 
 ![Systemd Information Tab](https://github.com/sffjunkie/ttsystemd/raw/main/systemd_overview.png?raw=true)
+![Systemd Defaults](https://github.com/sffjunkie/ttsystemd/raw/main/systemd_defaults.png?raw=true)
+![Systemd Timestamps](https://github.com/sffjunkie/ttsystemd/raw/main/systemd_timestamps.png?raw=true)
+
+## System Units
+
+![System Units](https://github.com/sffjunkie/ttsystemd/raw/main/system_units.png?raw=true)
