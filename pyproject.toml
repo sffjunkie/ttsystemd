@@ -3,17 +3,10 @@
 name = "ttsystemd"
 version = "0.1.0"
 description = "Systemd explorer"
-authors = [
-    {name = "Simon Kennedy", email = "sffjunkie+code@gmail.com"},
-]
-dependencies = [
-    "setuptools>=69.1.1",
-    "dbus-next>=0.2.3",
-    "xdg-base-dirs>=6.0.1",
-    "textual>=0.52.1",
-]
+authors = [{ name = "Simon Kennedy", email = "sffjunkie+code@gmail.com" }]
+dependencies = ["dbus-next>=0.2.3", "xdg-base-dirs>=6.0.1", "textual>=0.52.1"]
 requires-python = ">=3.10"
-license = {text = "Apache-2.0"}
+license = { text = "Apache-2.0" }
 readme = "README.md"
 classifiers = [
     "Development Status :: 4 - Beta",
