@@ -1,5 +1,5 @@
 {
-  description = "rt-systemd";
+  description = "TTSystemd - a systemd explorer for your terminal";
 
   inputs.pyproject-nix.url = "github:nix-community/pyproject.nix";
   inputs.pyproject-nix.inputs.nixpkgs.follows = "nixpkgs";
