@@ -4,7 +4,9 @@ from rich.table import Table
 from textual.app import App, ComposeResult
 from textual.containers import Container
 from textual.reactive import reactive
-from textual.widgets import Static, Label
+
+# from textual.widgets import Static
+from textual.widgets import Label
 from ttsystemd.systemd.runtime.properties import MANAGER_PROPERTIES
 
 

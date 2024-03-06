@@ -1,9 +1,8 @@
 from pathlib import Path
-from dataclasses import fields
 
 from dbus_next.aio import ProxyInterface
 
-from ttsystemd.systemd.runtime.types import DBusUnitFile, UnitType
+from ttsystemd.systemd.runtime.types import DBusUnitFile
 
 
 async def dbus_manager_list_unit_files(interface: ProxyInterface):
@@ -20,15 +19,3 @@ async def dbus_manager_list_unit_files(interface: ProxyInterface):
         )
 
     return unit_files
-
-
-# async def dbus_manager_list_unit_files(interface: ProxyInterface):
-#     data = await interface.call_list_unit_files()
-#     unit_files = {}
-#     field_names = [f.name for f in fields(DBusUnitFile)[1:]]  # skip unit_type
-#     for item in data:
-#         d = {k: v for k, v in zip(field_names, item)}
-#         d["unit_type"] = UnitType(d["unit_name"].split(".")[-1])
-#         unit_files[d["unit_name"]] = DBusUnitFile(**d)
-
-#     return unit_files

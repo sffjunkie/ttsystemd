@@ -2,8 +2,6 @@ import dbus_next.introspection
 from dbus_next.aio import MessageBus, ProxyInterface, ProxyObject
 from dbus_next.constants import BusType
 
-from ttsystemd.systemd.cache import cache_home
-from ttsystemd.systemd.runtime.object import split_object_path
 from ttsystemd.systemd.cache import dbus_load_interface_definition
 
 
