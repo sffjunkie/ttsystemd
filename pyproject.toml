@@ -56,8 +56,19 @@ app-dev = "textual run --dev ttsystemd.__main__"
 app-console = "textual console -x SYSTEM -x EVENT"
 app-console-event = "textual console -x SYSTEM"
 
+
 [tool.pytest.ini_options]
-markers = [
-    "unit",
-    "integration",
+markers = ["unit", "integration"]
+pythonpath = ["src"]
+junit_family = "xunit2"
+norecursedirs = [
+    ".direnv",
+    ".venv",
+    ".git",
+    ".tox",
+    ".cache",
+    ".settings",
+    "dist",
+    "build",
+    "docs",
 ]
