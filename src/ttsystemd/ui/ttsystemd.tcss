@@ -1,0 +1,86 @@
+$primary: #30D475;
+$sidebar_color: $primary-background-lighten-1;
+$content_color: $primary-background;
+
+Header {
+    dock: top;
+    height: 1;
+}
+
+Footer {
+    background: black;
+}
+
+Content {
+    padding: 0 1;
+    background: $content_color;
+}
+
+TabbedContent {
+    padding-top: 0;
+    height: auto;
+}
+
+TabPane {
+    padding: 0;
+}
+
+Sidebar {
+    dock: left;
+    width: 45;
+    background: $sidebar_color;
+    padding: 0;
+    margin-bottom: 2;
+
+    Horizontal {
+        height: auto;
+        padding: 0 2 1 4;
+        margin: 0;
+
+        Button {
+            margin-right: 5;
+        }
+    }
+
+    Tree {
+        margin: 0;
+        padding: 1;
+        background: $sidebar_color;
+    }
+}
+
+SystemdInfo {
+    height: 100vh;
+}
+
+SystemdInfoPane Label {
+    color: $secondary;
+}
+
+SystemdInfoOverviewTable {
+    height: auto;
+}
+
+SystemdInfoDefaultsTable {
+    height: auto;
+}
+
+SystemUnitsPane Container, UserUnitsPane Container {
+    padding: 1 2;
+}
+
+SystemdUnitsTable {
+    height: 100vh;
+    width: 100%;
+    scrollbar-gutter: stable;
+    background: $primary-background-darken-1;
+}
+
+UnitDetails {
+    Label {
+        color: $secondary;
+    }
+    UnitPropertiesTable {
+        padding: 0;
+    }
+}

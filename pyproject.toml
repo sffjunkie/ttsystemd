@@ -1,0 +1,59 @@
+
+[project]
+name = "ttsystemd"
+version = "0.1.0"
+description = "Systemd explorer"
+authors = [
+    {name = "Simon Kennedy", email = "sffjunkie+code@gmail.com"},
+]
+dependencies = [
+    "setuptools>=69.1.1",
+    "dbus-next>=0.2.3",
+    "xdg-base-dirs>=6.0.1",
+    "textual>=0.52.1",
+]
+requires-python = ">=3.10"
+license = {text = "Apache-2.0"}
+readme = "README.md"
+classifiers = [
+    "Development Status :: 4 - Beta",
+    "Operating System :: POSIX :: Linux",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.8",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Topic :: System :: Monitoring",
+]
+
+[build-system]
+requires = ["pdm-backend"]
+build-backend = "pdm.backend"
+
+
+[tool.pdm]
+distribution = true
+
+[tool.pdm.dev-dependencies]
+dev = [
+    "pytest>=8.0.2",
+    "tox>=4.13.0",
+    "textual-dev>=1.5.1",
+    "pytest-asyncio>=0.23.5",
+]
+
+[tool.pdm.scripts]
+test = "pdm run pytest"
+test-unit = "pdm run pytest -k unit"
+test-integration = "pdm run pytest -k integration"
+app = "python -m ttsystemd"
+app-dev = "textual run --dev ttsystemd.__main__"
+app-console = "textual console -x SYSTEM -x EVENT"
+app-console-event = "textual console -x SYSTEM"
+
+[tool.pytest.ini_options]
+markers = [
+    "unit",
+    "integration",
+]
