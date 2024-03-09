@@ -8,9 +8,9 @@ from ttsystemd.systemd.runtime.types import SystemdDBusProperties
 from ttsystemd.ui.widget.content import Content
 
 from ttsystemd.systemd.types import SessionType
-from ttsystemd.systemd.runtime.collect import (
-    dbus_collect_properties,
-    dbus_collect_units,
+from ttsystemd.systemd.runtime.manager import (
+    dbus_manager_collect_properties,
+    dbus_manager_collect_units,
 )
 # from ttsystemd.systemd.static.collect import json_collect_units
 
@@ -46,7 +46,7 @@ class SystemdApp(App):
 
     async def get_data(self) -> list[SystemdDBusProperties]:
         return await asyncio.gather(
-            dbus_collect_properties(SessionType.SYSTEM),
-            dbus_collect_units(SessionType.SYSTEM),
-            dbus_collect_units(SessionType.USER_SESSION),
+            dbus_manager_collect_properties(SessionType.SYSTEM),
+            dbus_manager_collect_units(SessionType.SYSTEM),
+            dbus_manager_collect_units(SessionType.USER_SESSION),
         )
