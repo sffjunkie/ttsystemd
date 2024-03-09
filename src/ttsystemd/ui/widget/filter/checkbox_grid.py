@@ -16,6 +16,7 @@ class FilterCheckboxGrid(Widget):
             "Service",
             "Slice",
             "Socket",
+            "Swap",
             "Target",
             "Timer",
         ]:
@@ -38,6 +39,7 @@ class FilterCheckboxGrid(Widget):
                 "service",
                 "slice",
                 "socket",
+                "swap",
                 "target",
                 "timer",
             ]:
@@ -55,6 +57,7 @@ class FilterCheckboxGrid(Widget):
             self.service = False
             self.slice = False
             self.socket = False
+            self.swap=False;
             self.target = False
             self.timer = False
 

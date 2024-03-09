@@ -38,6 +38,7 @@ class UnitTypeTree(Tree):
                     "service": [],
                     "slice": [],
                     "socket": [],
+                    "swap": [],
                     "target": [],
                     "timer": [],
                 }

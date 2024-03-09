@@ -15,5 +15,6 @@ class UnitType(StrEnum):
     Service = "service"
     Slice = "slice"
     Socket = "socket"
+    Swap = "swap"
     Target = "target"
     Timer = "timer"
