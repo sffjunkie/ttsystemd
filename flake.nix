@@ -19,24 +19,36 @@
       projectRoot = ./.;
     };
 
-    pkgs = nixpkgs.legacyPackages.x86_64-linux;
+    forAllSystems = function:
+      nixpkgs.lib.genAttrs [
+        "aarch64-linux"
+        "x86_64-darwin"
+        "x86_64-linux"
+      ] (system: function nixpkgs.legacyPackages.${system});
 
-    python = pkgs.python3;
   in {
-    devShells.x86_64-linux.default = let
-      arg = project.renderers.withPackages {inherit python;};
-      pythonEnv = python.withPackages arg;
-    in
-      pkgs.mkShell {
-        packages = [
-          pkgs.pdm
-          pythonEnv
-        ];
-      };
+    devShells = forAllSystems (pkgs: (
+      let
+        python = pkgs.python3;
+        arg = project.renderers.withPackages {inherit python;};
+        pythonEnv = python.withPackages arg;
+      in {
+        default = pkgs.mkShell {
+          packages = [
+            pkgs.pdm
+            pythonEnv
+          ];
+        };
+      }
+    ));
 
-    packages.x86_64-linux.default = let
-      attrs = project.renderers.buildPythonPackage {inherit python;};
-    in
-      python.pkgs.buildPythonPackage attrs;
+    packages = forAllSystems (pkgs: (
+      let
+        python = pkgs.python3;
+        attrs = project.renderers.buildPythonPackage {inherit python;};
+      in {
+        default = python.pkgs.buildPythonPackage attrs;
+      }
+    ));
   };
 }
