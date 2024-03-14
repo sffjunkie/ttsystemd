@@ -1,7 +1,9 @@
 import os
 
 import pytest
-from ttsystemd.systemd.cache import systemd_load_interface_definition
+from ttsystemd.systemd.runtime.cache.interface_definition import (
+    systemd_load_interface_definition,
+)
 
 
 @pytest.mark.xfail("VSCODE_PID" in os.environ, reason="Fails under vscode")
