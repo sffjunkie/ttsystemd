@@ -25,7 +25,6 @@
         "x86_64-darwin"
         "x86_64-linux"
       ] (system: function nixpkgs.legacyPackages.${system});
-
   in {
     devShells = forAllSystems (pkgs: (
       let
@@ -36,6 +35,8 @@
         default = pkgs.mkShell {
           packages = [
             pkgs.pdm
+            pkgs.ruff
+            pkgs.just
             pythonEnv
           ];
         };
