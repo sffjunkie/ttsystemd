@@ -5,7 +5,7 @@ from textual.app import App, ComposeResult
 from textual.containers import Container
 from textual.reactive import reactive
 from textual.widgets import Static
-from ttsystemd.systemd.runtime.types import SystemdDBusProperties
+from ttsystemd.systemd.runtime.types import Properties
 from ttsystemd import stringify
 from ttsystemd.systemd.runtime.properties import MANAGER_PROPERTIES
 
@@ -35,21 +35,17 @@ class SystemdInfoOverviewTable(Container):
     def compose(self) -> ComposeResult:
         yield self.content
 
-    def watch_systemd_properties(
-        self, systemd_properties: SystemdDBusProperties
-    ) -> None:
-        if systemd_properties is not None:
-            system_data = systemd_properties.properties
-
+    def watch_systemd_properties(self, properties: Properties) -> None:
+        if properties:
             self.table.rows = []
             for item in [
-                ("Version", system_data["version"]),
-                ("Architecture", system_data["architecture"]),
-                ("Unit Path", stringify.systemd_unit_path(system_data["unit_path"])),
+                ("Version", properties["Version"]),
+                ("Architecture", properties["Architecture"]),
+                ("Unit Path", stringify.systemd_unit_path(properties["UnitPath"])),
                 (
                     "Environment",
-                    stringify.systemd_environment(system_data["environment"]),
+                    stringify.systemd_environment(properties["Environment"]),
                 ),
-                ("Features", stringify.systemd_features(system_data["features"])),
+                ("Features", stringify.systemd_features(properties["Features"])),
             ]:
                 self.table.add_row(*item)

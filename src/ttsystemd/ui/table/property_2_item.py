@@ -6,12 +6,13 @@ from rich.style import Style
 from rich.table import Table
 from ttsystemd.systemd.runtime.properties import MANAGER_PROPERTIES
 from ttsystemd.systemd.runtime.utils import name_to_snake_case
+from ttsystemd.systemd.runtime.types import Properties
 
 
 class PropertyTable2Item(Static):
-    def __init__(self, properties, row_styles: list[Style] | None = None):
+    def __init__(self, property_names: list[str], row_styles: list[Style] | None = None):
         super().__init__()
-        self.properties = properties
+        self.property_names = property_names
         self.table = Table(
             expand=True,
             box=box.SIMPLE_HEAD,
@@ -27,28 +28,26 @@ class PropertyTable2Item(Static):
         self.table.add_column(width=w)
         self.table.add_column(width=None, ratio=1)
 
-    def fill(self, prop_data: list[str]):
-        system_data = prop_data.properties
-
-        prop_order = list(
-            zip_longest(
-                islice(self.properties, 0, None, 2),
-                islice(self.properties, 1, None, 2),
-            )
+    def fill(self, properties: Properties):
+        prop_order = zip_longest(
+            islice(self.property_names, 0, None, 2),
+            islice(self.property_names, 1, None, 2),
         )
 
         for row in prop_order:
-            prop_id0 = name_to_snake_case(row[0])
-            prop_display_func0 = MANAGER_PROPERTIES[prop_id0][1]
+            prop_name = row[0]
+            prop_display_func0 = MANAGER_PROPERTIES[prop_name][1]
+            if prop_display_func0 is None:
+                pass
             items = [
                 row[0],
-                prop_display_func0(system_data[prop_id0]),
+                prop_display_func0(properties[prop_name]),
             ]
             if row[1]:
-                prop_id1 = name_to_snake_case(row[1])
-                prop_display_func1 = MANAGER_PROPERTIES[prop_id1][1]
+                prop_name = row[1]
+                prop_display_func1 = MANAGER_PROPERTIES[prop_name][1]
                 items.append(row[1])
-                items.append(prop_display_func1(system_data[prop_id1]))
+                items.append(prop_display_func1(properties[prop_name]))
 
             self.table.add_row(*items)
         self.renderable = self.table

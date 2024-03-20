@@ -2,7 +2,7 @@ from ttsystemd.ui.table.property_2_item import PropertyTable2Item
 from rich.style import Style
 from textual.app import App
 from textual.reactive import reactive
-from ttsystemd.systemd.runtime.types import SystemdDBusProperties
+from ttsystemd.systemd.runtime.types import Properties
 
 DEFAULTS_PROPERTIES = [
     "DefaultBlockIOAccounting",
@@ -70,6 +70,6 @@ class SystemdInfoDefaultsTable(PropertyTable2Item):
         )
         super().__init__(DEFAULTS_PROPERTIES, row_styles=[_row_bg, ""])
 
-    def watch_systemd_properties(self, systemd_properties: SystemdDBusProperties):
+    def watch_systemd_properties(self, systemd_properties: Properties):
         if systemd_properties is not None:
             self.fill(systemd_properties)

@@ -1,7 +1,7 @@
 from textual.containers import Container
 from textual.reactive import reactive
 from textual.widgets import Tree
-from ttsystemd.systemd.runtime.types import SystemdDBusUnits
+from ttsystemd.systemd.runtime.types import DBusUnitInfo
 from ttsystemd.ui.table.units import SystemdUnitsTable
 from ttsystemd.ui.widget.sidebar import Sidebar
 from ttsystemd.ui.widget.unit_details import UnitDetails
@@ -24,7 +24,7 @@ class SystemUnitsPane(Container):
             yield self.units_overview
             yield self.unit_details
 
-    def watch_systemd_units(self, systemd_units: SystemdDBusUnits):
+    def watch_systemd_units(self, systemd_units: DBusUnitInfo):
         if systemd_units is not None:
             self.sidebar.systemd_units = systemd_units
             self.units_overview.systemd_units = systemd_units

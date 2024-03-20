@@ -2,7 +2,7 @@ from textual.reactive import reactive
 from textual.containers import Vertical, Horizontal
 from textual.widgets import Button
 
-from ttsystemd.systemd.runtime.types import SystemdDBusUnits
+from ttsystemd.systemd.runtime.types import DBusUnitInfo
 from ttsystemd.ui.widget.sidebar.units_tree import UnitTypeTree
 
 SIDEBAR_WIDTH = 60
@@ -32,7 +32,7 @@ class Sidebar(Vertical):
             yield Button("Expand All")
             yield Button("Collapse All")
 
-    def watch_systemd_units(self, systemd_units: SystemdDBusUnits) -> None:
+    def watch_systemd_units(self, systemd_units: DBusUnitInfo) -> None:
         if systemd_units is not None:
             self.unit_tree.systemd_units = systemd_units
 

@@ -1,7 +1,7 @@
 from textual.widgets import Label
 from textual.containers import VerticalScroll
 from textual.reactive import reactive
-from ttsystemd.systemd.runtime.types import SystemdDBusProperties
+from ttsystemd.systemd.runtime.types import Properties
 
 from ttsystemd.ui.table.systemd_defaults import SystemdInfoDefaultsTable
 from ttsystemd.ui.table.systemd_overview import SystemdInfoOverviewTable
@@ -24,7 +24,7 @@ class SystemdInfoPane(VerticalScroll):
             self.timestamps_table,
         )
 
-    def watch_systemd_properties(self, systemd_properties: SystemdDBusProperties):
+    def watch_systemd_properties(self, systemd_properties: Properties):
         if systemd_properties is not None:
             self.overview_table.systemd_properties = systemd_properties
             self.defaults_table.systemd_properties = systemd_properties

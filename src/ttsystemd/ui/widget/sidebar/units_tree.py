@@ -1,5 +1,5 @@
 from textual.reactive import reactive
-from ttsystemd.systemd.runtime.types import SystemdDBusUnits
+from ttsystemd.systemd.runtime.types import DBusUnitInfo
 from textual.widgets import Tree
 
 
@@ -25,7 +25,7 @@ class UnitTypeTree(Tree):
         self.auto_expand = False
         self.root.expand()
 
-    def watch_systemd_units(self, systemd_units: SystemdDBusUnits) -> None:
+    def watch_systemd_units(self, systemd_units: DBusUnitInfo) -> None:
         if systemd_units is not None:
             self.clear()
             if systemd_units is not None:
@@ -43,7 +43,7 @@ class UnitTypeTree(Tree):
                     "timer": [],
                 }
 
-                for name, unit in systemd_units.units.items():
+                for name, unit in systemd_units.items():
                     self.sections[unit.unit_type].append(name)
 
                 for section, items in self.sections.items():
