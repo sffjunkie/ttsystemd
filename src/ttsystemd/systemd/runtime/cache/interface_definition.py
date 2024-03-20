@@ -27,13 +27,6 @@ def dbus_interface_file_paths() -> str:
     return dbus_interface_file_default_paths() + [cache_home()]
 
 
-def systemd_interface_for_type(interface_type: str) -> str:
-    if not interface_type.startswith("org.freedesktop.systemd1."):
-        return f"org.freedesktop.systemd1.{interface_type}"
-    else:
-        return interface_type
-
-
 # org.freedesktop.systemd1.Mount.xml
 def dbus_load_interface_definition(filename: str) -> str | None:
     p = Path(filename)
@@ -52,6 +45,13 @@ def dbus_load_interface_definition(filename: str) -> str | None:
                     return introspection
 
     return IOError(f"interface definition {filename} not found")
+
+
+def systemd_interface_for_type(interface_type: str) -> str:
+    if not interface_type.startswith("org.freedesktop.systemd1."):
+        return f"org.freedesktop.systemd1.{interface_type}"
+    else:
+        return interface_type
 
 
 def systemd_load_interface_definition(interface_type: str) -> str | None:
