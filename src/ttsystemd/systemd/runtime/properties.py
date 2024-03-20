@@ -92,7 +92,7 @@ MANAGER_PROPERTY_DEFS: PropertyDefs = [
     ("DefaultTimeoutStartUSec", str),
     ("DefaultTimeoutStopUSec", str),
     ("DefaultTimerAccuracyUSec", str),
-    ("Environment", None),
+    ("Environment", str),
     ("ExitCode", str),
     ("Features", list),
     ("FinishTimestamp", stringify.systemd_timestamp),
@@ -135,7 +135,7 @@ MANAGER_PROPERTY_DEFS: PropertyDefs = [
     ("SecurityFinishTimestamp", stringify.systemd_timestamp),
     ("SecurityFinishTimestampMonotonic", stringify.systemd_monotonic),
     ("ServiceWatchdogs", stringify.systemd_bool),
-    ("showStatus", stringify.systemd_bool),
+    ("ShowStatus", stringify.systemd_bool),
     ("SystemState", str),
     ("Tainted", str),
     ("TimerSlackNSec", str),
@@ -156,7 +156,7 @@ MANAGER_PROPERTY_DEFS: PropertyDefs = [
 ]
 
 MANAGER_PROPERTIES = {
-    name_to_snake_case(prop[0]): prop for prop in MANAGER_PROPERTY_DEFS
+    prop[0]: prop for prop in MANAGER_PROPERTY_DEFS
 }
 
 

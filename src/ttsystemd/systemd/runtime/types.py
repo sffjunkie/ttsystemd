@@ -5,18 +5,19 @@ from dbus_next.constants import BusType
 
 from ttsystemd.systemd.types import UnitType
 
-SystemdDBusProperties = dict[str, Any] | None
+Properties = dict[str, Any]
 ValueFormatter = Callable[[Any], str]
 
 
 @dataclass
-class DBusUnitInterfaceProperties:
-    device: SystemdDBusProperties | None
-    mount: SystemdDBusProperties | None
-    scope: SystemdDBusProperties | None
-    service: SystemdDBusProperties | None
-    socket: SystemdDBusProperties | None
-    unit: SystemdDBusProperties | None
+class DBusUnitProperties:
+    device: Properties | None
+    mount: Properties | None
+    scope: Properties | None
+    service: Properties | None
+    socket: Properties | None
+    swap: Properties | None
+    unit: Properties | None
 
 
 @dataclass
@@ -43,14 +44,7 @@ class DBusUnit:
 
 
 @dataclass
-class SystemdDBusProperties:
-    bus_type: BusType
-    properties: SystemdDBusProperties
-
-
-@dataclass
-class SystemdDBusUnits:
-    bus_type: BusType
+class DBusUnitInfo:
     units: list[DBusUnit]
     unit_files: list[DBusUnitFile]
 
@@ -60,35 +54,3 @@ class Process:
     service: str
     pid: int
     command_line: str
-
-
-@dataclass
-class ServiceInfo:
-    processes: list[Process]
-    allowed_cpus: list[int]
-    allowed_memory_nodes: list[int]
-    ambient_capabilities: int
-    app_armor_profile: str
-    bpf_program: tuple[str, str]
-    bind_paths: tuple[str, str, int, int]
-    bind_read_only_paths: tuple[str, str, int, int]
-    block_io_accounting: bool
-    block_io_device_weight: tuple[str, int]
-    block_io_read_bandwidth: tuple[str, int]
-    block_io_weight: int
-    block_io_write_bandwidth: tuple[str, int]
-    bus_name: str
-    cpu_accounting: bool
-    cpu_affinity: bytes
-    cpu_affinity_from_numa: bool
-    cpu_quota_per_sec_usec: int
-
-
-@dataclass
-class UnitInfo: ...
-
-
-@dataclass
-class Service:
-    unit_info: UnitInfo
-    service_info: ServiceInfo

@@ -22,7 +22,7 @@ class JSONUnit:
 
 
 @dataclass
-class SystemdJSONUnits:
+class JSONUnitInfo:
     unit_files: list[JSONUnitFile]
     units: list[JSONUnit]
 

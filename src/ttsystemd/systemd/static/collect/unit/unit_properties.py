@@ -1,5 +1,5 @@
 from ttsystemd.systemd.types import SessionType
-from ttsystemd.systemd.static.systemctl import systemctl_cmd_text
+from ttsystemd.systemd.static.collect.systemctl import systemctl_cmd_text
 
 
 async def properties(

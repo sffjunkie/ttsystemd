@@ -1,6 +1,6 @@
 from ttsystemd.systemd.types import SessionType
 from ttsystemd.systemd.static.types import UnitBackingFile
-from ttsystemd.systemd.static.systemctl import systemctl_cmd_text
+from ttsystemd.systemd.static.collect.systemctl import systemctl_cmd_text
 
 
 async def cat(session_type: SessionType, unit_name: str) -> list[UnitBackingFile]:
