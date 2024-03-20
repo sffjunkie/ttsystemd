@@ -32,7 +32,7 @@ class JSONSystemCollector:
             self.get_unit_list(SessionType.USER_SESSION),
         )
 
-    async def get_unit_list(session_type: SessionType) -> dict[str, JSONUnit]:
+    async def get_unit_list(self, session_type: SessionType) -> dict[str, JSONUnit]:
         if session_type == SessionType.USER_SESSION:
             params = ["--user", "list-units"]
         else:
@@ -49,7 +49,7 @@ class JSONSystemCollector:
                 data[u["unit_name"]] = JSONUnit(**u)
         return data
 
-    async def get_unit_file_list(session_type: SessionType) -> dict[str, JSONUnitFile]:
+    async def get_unit_file_list(self, session_type: SessionType) -> dict[str, JSONUnitFile]:
         if session_type == SessionType.USER_SESSION:
             params = ["--user", "list-unit-files"]
         else:
