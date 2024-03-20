@@ -28,10 +28,10 @@ test:
     {{pypm}} run tox --workdir {{cache_dir}}/tox
 
 test-unit:
-    pytest -k unit
+    {{pypm}} run pytest -k unit
 
 test-integration:
-    pytest -k integration
+    {{pypm}} run pytest -k integration
 
 # Ron tox to test documentation generation
 test-docs:
