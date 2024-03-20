@@ -1,6 +1,6 @@
 from dataclasses import dataclass
-from ttsystemd.systemd.runtime.types import SystemdDBusUnits, DBusUnit, DBusUnitFile
-from ttsystemd.systemd.static.types import SystemdJSONUnits, JSONUnit, JSONUnitFile
+from ttsystemd.systemd.runtime.types import DBusUnitInfo, DBusUnit, DBusUnitFile
+from ttsystemd.systemd.static.types import JSONUnitInfo, JSONUnit, JSONUnitFile
 
 
 @dataclass
@@ -12,7 +12,7 @@ class UnitInfo:
 
 
 # We shouldn't get to the else statements, but we'll add them for completeness
-def merge(dbus_units: SystemdDBusUnits, json_units: SystemdJSONUnits):
+def merge(dbus_units: DBusUnitInfo, json_units: JSONUnitInfo):
     all_units = {}
     for dbus_unit_name, dbus_unit in dbus_units.units.items():
         all_units[dbus_unit_name] = UnitInfo(
