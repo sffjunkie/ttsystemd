@@ -1,4 +1,6 @@
 # Justfile for Python projects using mypy, pdm, pytest, ruff, tox
+import './textual.just'
+
 pypm := 'pdm'
 project := 'ttsystemd'
 
@@ -56,5 +58,3 @@ test-coverage-term:
 # Run a python repl
 repl:
     @{{pypm}} run python
-
-import './textual.just'
