@@ -32,6 +32,6 @@ class UserUnitsPane(Container):
 
     def on_tree_node_selected(self, message: Tree.NodeSelected):
         unit_type = message.node.label.plain
-        if unit_type == "System":
+        if unit_type == "Units":
             unit_type = "*"
         self.units_overview.unit_type = unit_type

@@ -46,7 +46,7 @@ class SystemUnitsPane(Container):
 
         if is_unit_type:
             units_table.display = True
-            if item == "System":
+            if item == "Units":
                 item = "*"
             self.units_overview.unit_type = item
 
