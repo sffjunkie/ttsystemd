@@ -7,5 +7,5 @@ async def test_int_manager_properties():
     collector = DBusSystemCollector()
     await collector.collect()
     assert len(collector.properties) > 0
-    assert "architecture" in collector.properties
+    assert "Architecture" in collector.properties
 
