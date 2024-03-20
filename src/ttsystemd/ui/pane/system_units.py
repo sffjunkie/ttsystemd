@@ -54,5 +54,5 @@ class SystemUnitsPane(Container):
         else:
             units_table.display = False
 
-            self.unit_details.unit = self.systemd_units.units[item]
+            self.unit_details.unit = self.systemd_units[item]
             unit_details.display = True
