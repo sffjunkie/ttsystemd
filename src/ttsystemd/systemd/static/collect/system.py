@@ -6,7 +6,7 @@ from ttsystemd.systemd.static.types import JSONUnit, JSONUnitFile, UnitType
 from ttsystemd.systemd.types import SessionType
 
 
-class DBusSystemCollector:
+class JSONSystemCollector:
     system_units: dict[str, JSONUnit]
     system_unit_files: dict[str, JSONUnitFile]
 
