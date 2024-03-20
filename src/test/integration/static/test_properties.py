@@ -1,6 +1,6 @@
 import pytest
 from ttsystemd.systemd.types import SessionType
-from ttsystemd.systemd.static.unit_properties import properties
+from ttsystemd.systemd.static.collect.unit.unit_properties import properties
 
 
 @pytest.mark.asyncio

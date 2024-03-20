@@ -1,17 +1,19 @@
 import pytest
-from ttsystemd.systemd.types import SessionType
-from ttsystemd.systemd.runtime.manager import dbus_manager_collect_units
+from ttsystemd.systemd.runtime.collect.system import DBusSystemCollector
 
 
 @pytest.mark.asyncio
 async def test_int_units_system():
-    result = await dbus_manager_collect_units(SessionType.SYSTEM)
-    assert len(result.units) > 0
-    assert "systemd-oomd.service" in result.units
+    collector = DBusSystemCollector()
+    await collector.collect()
+    assert len(collector.system_units) > 0
+    assert "systemd-oomd.service" in collector.system_units
 
 
 @pytest.mark.asyncio
 async def test_int_units_user_session():
-    result = await dbus_manager_collect_units(SessionType.USER_SESSION)
-    assert len(result.units) > 0
-    assert "dbus.service" in result.units
+    collector = DBusSystemCollector()
+    await collector.collect()
+    assert len(collector.session_units) > 0
+    assert "dbus.service" in collector.session_units
+

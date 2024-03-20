@@ -1,7 +1,7 @@
 import os
 import pytest
 from ttsystemd.systemd.types import SessionType
-from ttsystemd.systemd.static.unit_cat import cat
+from ttsystemd.systemd.static.collect.unit.unit_cat import cat
 
 
 @pytest.mark.asyncio

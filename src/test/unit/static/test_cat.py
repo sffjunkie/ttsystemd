@@ -1,4 +1,4 @@
-from ttsystemd.systemd.static.unit_cat import parse_cat
+from ttsystemd.systemd.static.collect.unit.unit_cat import parse_cat
 
 TEXT = """# /etc/systemd/system/ModemManager.service
 [Unit]

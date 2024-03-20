@@ -1,4 +1,4 @@
-from ttsystemd.systemd.static.unit_properties import parse_properties
+from ttsystemd.systemd.static.collect.unit.unit_properties import parse_properties
 
 TEXT = """SendSIGKILL=yes
 SendSIGHUP=no

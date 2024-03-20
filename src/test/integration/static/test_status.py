@@ -1,6 +1,6 @@
 import pytest
 from ttsystemd.systemd.types import SessionType
-from ttsystemd.systemd.static.unit_status import status
+from ttsystemd.systemd.static.collect.unit.unit_status import status
 
 
 @pytest.mark.asyncio

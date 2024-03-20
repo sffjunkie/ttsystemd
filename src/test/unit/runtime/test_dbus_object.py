@@ -1,5 +1,5 @@
 import pytest
-from ttsystemd.systemd.runtime.object import (
+from ttsystemd.systemd.runtime.dbus_object import (
     DBusObject,
     encode_object_path_elem,
     decode_object_path_elem,
