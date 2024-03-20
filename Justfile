@@ -56,3 +56,5 @@ test-coverage-term:
 # Run a python repl
 repl:
     @{{pypm}} run python
+
+import './textual.just'

@@ -1,4 +1,3 @@
-
 [project]
 name = "ttsystemd"
 version = "0.1.0"
@@ -28,7 +27,6 @@ Issues = "https://github.com/sffjunkie/ttsystemd/issues"
 requires = ["pdm-backend"]
 build-backend = "pdm.backend"
 
-
 [tool.pdm]
 distribution = true
 
@@ -41,15 +39,8 @@ dev = [
     "mypy>=1.9.0",
 ]
 
-[tool.pdm.scripts]
-app = "python -m ttsystemd"
-app-dev = "textual run --dev ttsystemd.__main__"
-app-console = "textual console -x SYSTEM -x EVENT"
-app-console-event = "textual console -x SYSTEM"
-
-
 [tool.pytest.ini_options]
-markers = ["unit", "integration"]
+markers = ["unit", "integration", "asyncio"]
 pythonpath = ["src"]
 junit_family = "xunit2"
 norecursedirs = [
