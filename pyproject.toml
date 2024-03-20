@@ -42,9 +42,6 @@ dev = [
 ]
 
 [tool.pdm.scripts]
-test = "pdm run pytest"
-test-unit = "pdm run pytest -k unit"
-test-integration = "pdm run pytest -k integration"
 app = "python -m ttsystemd"
 app-dev = "textual run --dev ttsystemd.__main__"
 app-console = "textual console -x SYSTEM -x EVENT"

@@ -25,6 +25,12 @@ lint:
 test:
     {{pypm}} run tox --workdir {{cache_dir}}/tox
 
+test-unit:
+    pytest -k unit
+
+test-integration:
+    pytest -k integration
+
 # Ron tox to test documentation generation
 test-docs:
     {{pypm}} run tox --workdir {{cache_dir}}/tox -e doc
