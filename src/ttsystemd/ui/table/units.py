@@ -1,6 +1,6 @@
 from textual.widgets import DataTable
 from textual.reactive import reactive
-from ttsystemd.systemd.runtime.types import SystemdDBusUnits
+from ttsystemd.systemd.runtime.types import DBusUnitInfo
 from itertools import islice
 
 
@@ -13,9 +13,17 @@ class SystemdUnitsTable(DataTable):
             cursor_type="row",
             zebra_stripes=True,
         )
-        self.add_columns("Name", "Type", "Active State", "Load State", "Sub State")
+        self.add_column(" ", key="status")
+        self.add_column("Name", key="name")
+        self.add_column("Type", key="type")
+        self.add_column("Active State", key="active_state")
+        self.add_column("Load State", key="load_state")
+        self.add_column("Sub State", key="sub_state")
 
-    def watch_systemd_units(self, systemd_units: SystemdDBusUnits):
+        self.sort_key = "name"
+        self.sort_reverse = False
+
+    def watch_systemd_units(self, systemd_units: DBusUnitInfo):
         if systemd_units is not None:
             self.fill(systemd_units, self.unit_type)
 
@@ -23,22 +31,34 @@ class SystemdUnitsTable(DataTable):
         if self.systemd_units is not None:
             self.fill(self.systemd_units, unit_type)
 
-    def fill(self, systemd_units: SystemdDBusUnits, unit_type: str):
+    def on_data_table_header_selected(self, selection: DataTable.HeaderSelected):
+        if selection.column_index == 0:
+            return
+
+        if selection.column_key.value == self.sort_key:
+            self.sort_reverse = not self.sort_reverse
+        else:
+            self.sort_key = selection.column_key.value
+            self.sort_reverse = False
+        self.sort(self.sort_key, reverse=self.sort_reverse)
+
+    def fill(self, systemd_units: DBusUnitInfo, unit_type: str):
         if systemd_units is not None:
             if unit_type != "*":
 
                 def _filter(unit):
                     return unit.unit_type == unit_type
 
-                units = filter(_filter, systemd_units.units.values())
+                units = filter(_filter, systemd_units.values())
             else:
-                units = systemd_units.units.values()
+                units = systemd_units.values()
 
             units = sorted(units, key=lambda unit: unit.unit_name)
 
             self.clear()
             items = [
                 (
+                    status_symbol(unit.active_state),
                     self._format_unit_name(unit.unit_name),
                     unit.unit_type,
                     unit.active_state,
@@ -63,3 +83,18 @@ class SystemdUnitsTable(DataTable):
         it = iter(iterable)
         while batch := tuple(islice(it, n)):
             yield "".join(batch)
+
+
+def status_symbol(active_state: str):
+    if active_state == "active":
+        return "[green]●[/green]"
+    if active_state == "deactivating":
+        return "[white]●[/white]"
+    elif active_state == "inactive" or active_state == "maintenance":
+        return "○"
+    elif active_state == "failed" or active_state == "error":
+        return "[red]×[/red]"
+    elif active_state == "reloading":
+        return "[green]↻[/green]"
+    else:
+        return ""
