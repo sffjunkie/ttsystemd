@@ -1,4 +1,5 @@
 from dataclasses import dataclass
+from ttsystemd.systemd.types import UnitType
 from ttsystemd.systemd.runtime.types import DBusUnitInfo, DBusUnit, DBusUnitFile
 from ttsystemd.systemd.static.types import JSONUnitInfo, JSONUnit, JSONUnitFile
 
@@ -6,6 +7,7 @@ from ttsystemd.systemd.static.types import JSONUnitInfo, JSONUnit, JSONUnitFile
 @dataclass
 class UnitInfo:
     name: str
+    type: UnitType
     dbus_unit: DBusUnit | None
     dbus_unit_file: DBusUnitFile | None
     json_unit: JSONUnit | None
@@ -22,6 +24,7 @@ def merge(dbus_units: DBusUnitInfo, json_units: JSONUnitInfo) -> dict[str, UnitI
     for dbus_unit_name, dbus_unit in dbus_units.units.items():
         all_units[dbus_unit_name] = UnitInfo(
             name=dbus_unit_name,
+            type=dbus_unit.unit_type,
             dbus_unit=dbus_unit,
             dbus_unit_file=None,
             json_unit=None,
@@ -34,6 +37,7 @@ def merge(dbus_units: DBusUnitInfo, json_units: JSONUnitInfo) -> dict[str, UnitI
         else:
             all_units[dbus_unit_name] = UnitInfo(
                 name=dbus_unit_name,
+                type=UnitType.Unknown,
                 dbus_unit=None,
                 dbus_unit_file=dbus_unit_file,
                 json_unit=None,
@@ -46,6 +50,7 @@ def merge(dbus_units: DBusUnitInfo, json_units: JSONUnitInfo) -> dict[str, UnitI
         else:
             all_units[json_unit_name] = UnitInfo(
                 name=json_unit_name,
+                type=json_unit.unit_type,
                 dbus_unit=None,
                 dbus_unit_file=None,
                 json_unit=json_unit,
@@ -58,6 +63,7 @@ def merge(dbus_units: DBusUnitInfo, json_units: JSONUnitInfo) -> dict[str, UnitI
         else:
             all_units[json_unit_name] = UnitInfo(
                 name=json_unit_name,
+                type=UnitType.Unknown,
                 dbus_unit=None,
                 dbus_unit_file=None,
                 json_unit=None,

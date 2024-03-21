@@ -43,8 +43,8 @@ class UnitsTable(DataTable):
         if systemd_units is not None:
             if unit_type != "*":
 
-                def _filter(unit):
-                    return unit.unit_type == unit_type
+                def _filter(unit: UnitInfo):
+                    return unit.type == unit_type
 
                 units = filter(_filter, systemd_units.values())
             else:
