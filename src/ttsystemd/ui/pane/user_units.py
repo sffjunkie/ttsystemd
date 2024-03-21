@@ -2,22 +2,31 @@ from textual import on
 from textual.app import ComposeResult
 from textual.containers import Container
 from textual.reactive import Reactive, reactive
+from textual.widgets import Button, Tree
+from ttsystemd.systemd.merge import UnitData
 from ttsystemd.ui.widget.sidebar import Sidebar
+from ttsystemd.ui.widget.unit_details import UnitDetails
+from ttsystemd.ui.widget.units_overview import UnitsOverview
+
+UnitType = str
 
 
 class UserUnitsPane(Container):
-    systemd_units = reactive(None)
-    unit_type = reactive("*")
+    systemd_units: Reactive[UnitData | None] = reactive(None)
+    unit_type: Reactive[UnitType] = reactive("*")
 
-    def __init__(self):
+    def __init__(self) -> None:
         super().__init__()
         self.sidebar = Sidebar(id="system_units_sidebar")
-        self.units_overview = SystemdUnitsTable()
+        self.units_overview = UnitsOverview()
+        self.unit_details = UnitDetails()
+        self.unit_details.display = False
 
     def compose(self) -> ComposeResult:
         yield self.sidebar
         with Container():
             yield self.units_overview
+            yield self.unit_details
 
     def watch_systemd_units(self, systemd_units: UnitData) -> None:
         if systemd_units is not None:
