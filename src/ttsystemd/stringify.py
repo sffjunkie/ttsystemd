@@ -4,7 +4,7 @@ MAX = 0xFFFFFFFFFFFFFFFF
 
 
 def systemd_bool(value: bool) -> str:
-    return "true" if bool else "false"
+    return "true" if value else "false"
 
 
 def systemd_max(value: int) -> str:
