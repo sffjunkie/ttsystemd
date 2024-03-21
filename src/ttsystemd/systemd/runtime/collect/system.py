@@ -9,45 +9,44 @@ from ttsystemd.systemd.runtime.connect import dbus_message_bus
 from ttsystemd.systemd.runtime.interface import (
     systemd_get_object_interface,
 )
-from ttsystemd.systemd.runtime.properties import (
-    MANAGER_PROPERTIES,MANAGER_PROPERTY_DEFS,
-)
+from ttsystemd.systemd.runtime.properties import MANAGER_PROPERTIES
 from ttsystemd.systemd.runtime.types import (
     DBusUnit,
     DBusUnitFile,
     Properties,
-    UnitType,
 )
+from ttsystemd.systemd.types import UnitType
 
 
 class DBusSystemCollector:
     properties: Properties
 
-    system_bus: MessageBus | None
+    _system_bus: MessageBus | None
+    _session_bus: MessageBus | None
+
     system_units: dict[str, DBusUnit]
     system_unit_files: dict[str, DBusUnitFile]
 
-    session_bus: MessageBus | None
     session_units: dict[str, DBusUnit]
     session_unit_files: dict[str, DBusUnitFile]
 
     def __init__(self):
         self.properties = {}
 
-        self.system_bus = None
+        self._system_bus = None
         self.system_units = {}
         self.system_unit_files = {}
 
-        self.session_bus = None
+        self._session_bus = None
         self.session_units = {}
         self.session_unit_files = {}
 
     async def collect(self) -> None:
-        self.system_bus = await dbus_message_bus(BusType.SYSTEM)
-        self.system_interface = await self._get_manager_interface(self.system_bus)
+        self._system_bus = await dbus_message_bus(BusType.SYSTEM)
+        self.system_interface = await self._get_manager_interface(self._system_bus)
 
-        self.session_bus = await dbus_message_bus(BusType.SESSION)
-        self.session_interface = await self._get_manager_interface(self.session_bus)
+        self._session_bus = await dbus_message_bus(BusType.SESSION)
+        self.session_interface = await self._get_manager_interface(self._session_bus)
 
         (
             self.properties,
@@ -64,8 +63,15 @@ class DBusSystemCollector:
         )
 
     async def get_properties(self) -> Properties:
-        properties_interface = await self._get_properties_interface(self.system_bus)
-        all_props = await properties_interface.call_get_all("org.freedesktop.systemd1.Manager")
+        if self._system_bus is None:
+            raise ValueError(
+                "Not connected to message bus - You need to run `collect` first"
+            )
+
+        properties_interface = await self._get_properties_interface(self._system_bus)
+        all_props = await properties_interface.call_get_all(  # type: ignore
+            "org.freedesktop.systemd1.Manager"
+        )
         data: Properties = {}
         for item in MANAGER_PROPERTIES.keys():
             value = all_props[item].value
@@ -81,7 +87,7 @@ class DBusSystemCollector:
         return data
 
     async def get_unit_list(self, interface: ProxyInterface) -> dict[str, DBusUnit]:
-        data = await interface.call_list_units()
+        data = await interface.call_list_units()  # type: ignore
         units = {}
         field_names = [f.name for f in fields(DBusUnit)[1:]]  # skip unit_type
         for item in data:
@@ -94,14 +100,14 @@ class DBusSystemCollector:
     async def get_unit_file_list(
         self, interface: ProxyInterface
     ) -> dict[str, DBusUnitFile]:
-        data = await interface.call_list_unit_files()
+        data = await interface.call_list_unit_files()  # type: ignore
         unit_files = {}
         for item in data:
             unit_file_path = Path(item[0])
             unit_name = unit_file_path.name
             unit_files[unit_name] = DBusUnitFile(
                 unit_name=unit_name,
-                unit_type=unit_file_path.suffix.lstrip("."),
+                unit_type=UnitType(unit_file_path.suffix.lstrip(".")),
                 unit_path=item[0],
                 enable=item[1],
             )

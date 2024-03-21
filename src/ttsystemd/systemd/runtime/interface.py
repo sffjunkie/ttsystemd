@@ -1,4 +1,5 @@
-from dbus_next.aio import MessageBus
+from dbus_next.aio import MessageBus, ProxyInterface
+from dbus_next.introspection import Node
 
 from ttsystemd.systemd.runtime.connect import (
     dbus_introspect,
@@ -16,7 +17,7 @@ async def dbus_get_interface(
     bus: MessageBus,
     object_path: str,
     interface_name: str,
-):
+) -> ProxyInterface:
     introspection = await dbus_introspect(bus, object_path)
     proxy = await dbus_introspection_get_proxy(bus, introspection, object_path)
     interface = dbus_introspection_get_interface(proxy, interface_name)
@@ -30,14 +31,20 @@ async def dbus_object_introspect(
     introspectable = await dbus_get_interface(
         bus, object_path, "org.freedesktop.DBus.Introspectable"
     )
-    return await introspectable.call_introspect()
+    return await introspectable.call_introspect()  # type: ignore
 
 
 async def dbus_get_object_interface(
-    bus: MessageBus, bus_name: str, object_path: str, interface_def: str, interface_name: str
-):
+    bus: MessageBus,
+    bus_name: str,
+    object_path: str,
+    interface_def: str,
+    interface_name: str,
+) -> ProxyInterface:
     try:
-        interface_definition = dbus_load_interface_definition(interface_def + ".xml")
+        interface_definition = Node.parse(
+            dbus_load_interface_definition(interface_def + ".xml")
+        )
     except IOError:
         interface_definition = await dbus_object_introspect(bus, object_path)
 
@@ -55,9 +62,9 @@ async def systemd_get_object_interface(
     object_path: str,
     interface_def: str,
     interface_name: str,
-):
+) -> ProxyInterface:
     def_full_name = f"org.freedesktop.{interface_def}"
-    interface_full_name=f"org.freedesktop.{interface_name}"
+    interface_full_name = f"org.freedesktop.{interface_name}"
     return await dbus_get_object_interface(
         bus,
         "org.freedesktop.systemd1",

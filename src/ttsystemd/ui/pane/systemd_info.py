@@ -1,6 +1,6 @@
 from textual.widgets import Label
 from textual.containers import VerticalScroll
-from textual.reactive import reactive
+from textual.reactive import reactive, Reactive
 from ttsystemd.systemd.runtime.types import Properties
 
 from ttsystemd.ui.table.systemd_defaults import SystemdInfoDefaultsTable
@@ -9,7 +9,7 @@ from ttsystemd.ui.table.systemd_timestamps import SystemdInfoTimestampsTable
 
 
 class SystemdInfoPane(VerticalScroll):
-    systemd_properties = reactive(None)
+    systemd_properties: Reactive[Properties | None] = reactive(None)
 
     def __init__(self):
         self.overview_table = SystemdInfoOverviewTable()

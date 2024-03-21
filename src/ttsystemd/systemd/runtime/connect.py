@@ -1,5 +1,5 @@
 import dbus_next.introspection
-from dbus_next.aio import MessageBus, ProxyObject
+from dbus_next.aio import MessageBus, ProxyObject, ProxyInterface
 from dbus_next.constants import BusType
 
 
@@ -30,7 +30,7 @@ async def dbus_introspection_get_proxy(
 
 def dbus_introspection_get_interface(
     systemd_proxy: ProxyObject, interface_name: str
-) -> dbus_next.introspection.Interface:
+) -> ProxyInterface:
     return systemd_proxy.get_interface(interface_name)
 
 

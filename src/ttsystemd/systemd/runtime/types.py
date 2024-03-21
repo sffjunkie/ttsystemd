@@ -1,8 +1,6 @@
 from dataclasses import dataclass
 from typing import Any, Callable
 
-from dbus_next.constants import BusType
-
 from ttsystemd.systemd.types import UnitType
 
 Properties = dict[str, Any]
@@ -45,8 +43,8 @@ class DBusUnit:
 
 @dataclass
 class DBusUnitInfo:
-    units: list[DBusUnit]
-    unit_files: list[DBusUnitFile]
+    units: dict[str, DBusUnit]
+    unit_files: dict[str, DBusUnitFile]
 
 
 @dataclass

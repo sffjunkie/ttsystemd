@@ -10,10 +10,13 @@ async def properties(
         params = ["--user", *params]
 
     result = await systemctl_cmd_text(params)
-    if result.returncode == 0:
+    if result.returncode == 0 and result.text is not None:
         return parse_properties(result.text)
     else:
-        raise IOError(f"Unbale to get properties for {unit_name}: {result.text}")
+        msg = f"Unable to get properties for {unit_name}"
+        if result.text is not None:
+            msg += f": {result.text}"
+        raise IOError(msg)
 
 
 def parse_properties(text: str) -> dict[str, str]:
@@ -29,8 +32,8 @@ def parse_properties(text: str) -> dict[str, str]:
             k, v = elem.split("=", maxsplit=1)
             environment[k] = v
 
-        result["Environment"] = environment
+        result["Environment"] = environment  # type: ignore
 
     if "Features" in result:
-        result["Features"] = result["Features"].split(" ")
+        result["Features"] = result["Features"].split(" ")  # type: ignore
     return result

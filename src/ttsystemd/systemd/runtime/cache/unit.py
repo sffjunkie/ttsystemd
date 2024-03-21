@@ -2,14 +2,13 @@ from dbus_next.constants import BusType
 from dbus_next.aio import MessageBus
 
 from ttsystemd.systemd.runtime.connect import dbus_message_bus
-from ttsystemd.systemd.runtime.types import DBusUnitProperties
 from ttsystemd.systemd.runtime.collect.unit import Unit
 
 
 class UnitCache:
     _bus: MessageBus | None
     _bus_type: BusType
-    _cache: dict[str, DBusUnitProperties] = {}
+    _cache: dict[str, Unit] = {}
 
     def __init__(self, bus_type: BusType) -> None:
         self._bus = None
@@ -17,7 +16,7 @@ class UnitCache:
 
     async def get(self, object_path: str) -> Unit:
         if object_path in self._cache:
-            return object_path
+            return self._cache[object_path]
 
         if self._bus is None:
             self._bus = await dbus_message_bus(self._bus_type)

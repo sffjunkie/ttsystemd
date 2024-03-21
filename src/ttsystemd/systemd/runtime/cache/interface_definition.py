@@ -12,7 +12,7 @@ def cache_home() -> Path:
     return cache_home
 
 
-def dbus_interface_file_default_paths() -> str:
+def dbus_interface_file_default_paths() -> list[Path]:
     if Path("/etc/NIXOS").exists() or FORCE_NIXOS:
         return [
             Path("/run/current-system/sw/share/dbus-1/interfaces/"),
@@ -23,12 +23,12 @@ def dbus_interface_file_default_paths() -> str:
         ]
 
 
-def dbus_interface_file_paths() -> str:
+def dbus_interface_file_paths() -> list[Path]:
     return dbus_interface_file_default_paths() + [cache_home()]
 
 
 # org.freedesktop.systemd1.Mount.xml
-def dbus_load_interface_definition(filename: str) -> str | None:
+def dbus_load_interface_definition(filename: str) -> str:
     p = Path(filename)
     if p.is_absolute() and p.exists():
         with p.open("r") as fp:
@@ -44,7 +44,7 @@ def dbus_load_interface_definition(filename: str) -> str | None:
                     introspection = fp.read(-1)
                     return introspection
 
-    return IOError(f"interface definition {filename} not found")
+    raise IOError(f"interface definition {filename} not found")
 
 
 def systemd_interface_for_type(interface_type: str) -> str:

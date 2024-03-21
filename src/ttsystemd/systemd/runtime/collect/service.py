@@ -25,7 +25,7 @@ class Service:
     cpu_quota_per_sec_usec: int
 
     async def collect(self, interface: ProxyInterface) -> None:
-        data = await interface.call_get_processes()
+        data = await interface.call_get_processes()  # type: ignore
 
         self.processes = []
         field_names = [f.name for f in fields(Process)]
@@ -33,5 +33,5 @@ class Service:
             d = {k: v for k, v in zip(field_names, item)}
             self.processes.append(Process(**d))
 
-        self.allowed_cpus = await interface.call_allowed_cpus()
-        self.allowed_memory_nodes = await interface.call_allowed_memory_nodes()
+        self.allowed_cpus = await interface.call_allowed_cpus()  # type: ignore
+        self.allowed_memory_nodes = await interface.call_allowed_memory_nodes()  # type: ignore

@@ -94,7 +94,7 @@ MANAGER_PROPERTY_DEFS: PropertyDefs = [
     ("DefaultTimerAccuracyUSec", str),
     ("Environment", str),
     ("ExitCode", str),
-    ("Features", list),
+    ("Features", stringify.systemd_features),
     ("FinishTimestamp", stringify.systemd_timestamp),
     ("FinishTimestampMonotonic", stringify.systemd_monotonic),
     ("GeneratorsFinishTimestamp", stringify.systemd_timestamp),
@@ -155,9 +155,7 @@ MANAGER_PROPERTY_DEFS: PropertyDefs = [
     ("WatchdogLastPingTimestampMonotonic", stringify.systemd_monotonic),
 ]
 
-MANAGER_PROPERTIES = {
-    prop[0]: prop for prop in MANAGER_PROPERTY_DEFS
-}
+MANAGER_PROPERTIES = {prop[0]: prop for prop in MANAGER_PROPERTY_DEFS}
 
 
 MOUNT_PROPERTY_DEFS: PropertyDefs = [

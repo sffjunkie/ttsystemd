@@ -1,7 +1,7 @@
 from dbus_next import InterfaceNotFoundError
 from dbus_next.aio import MessageBus
 
-from ttsystemd.systemd.runtime.interface import dbus_get_object_interface
+from ttsystemd.systemd.runtime.interface import systemd_get_object_interface
 from ttsystemd.systemd.runtime.properties import INTERFACE_PROPERTIES
 from ttsystemd.systemd.runtime.types import Properties
 
@@ -39,12 +39,13 @@ class Unit:
         bus: MessageBus,
         unit_path: str,
         interface_type: str,
-    ) -> Properties:
+    ) -> Properties | None:
         try:
-            interface = await dbus_get_object_interface(
+            interface = await systemd_get_object_interface(
                 bus,
                 unit_path,
-                f"org.freedesktop.systemd1.{interface_type.capitalize()}",
+                interface_type.capitalize(),
+                interface_type.capitalize(),
             )
             data = {}
             properties = INTERFACE_PROPERTIES[interface_type.lower()]

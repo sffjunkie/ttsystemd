@@ -39,9 +39,8 @@ class JSONSystemCollector:
             params = ["list-units"]
 
         result = await systemctl_cmd_json(params)
-        data = None
-        if result.returncode == 0:
-            data = {}
+        data = {}
+        if result.returncode == 0 and result.json is not None:
             field_names = [f.name for f in fields(JSONUnit)[1:]]
             for item in result.json:
                 u = {k: v for k, v in zip(field_names, item.values())}
@@ -49,20 +48,23 @@ class JSONSystemCollector:
                 data[u["unit_name"]] = JSONUnit(**u)
         return data
 
-    async def get_unit_file_list(self, session_type: SessionType) -> dict[str, JSONUnitFile]:
+    async def get_unit_file_list(
+        self, session_type: SessionType
+    ) -> dict[str, JSONUnitFile]:
         if session_type == SessionType.USER_SESSION:
             params = ["--user", "list-unit-files"]
         else:
             params = ["list-unit-files"]
 
-        data = await systemctl_cmd_json(params)
+        result = await systemctl_cmd_json(params)
 
-        result = {}
-        for item in data.json:
-            uf = JSONUnitFile(
-                unit_file=item["unit_file"],
-                state=item["state"],
-                preset=item["state"],
-            )
-            result[item["unit_file"]] = uf
-        return result
+        data = {}
+        if result.returncode == 0 and result.json is not None:
+            for item in result.json:
+                uf = JSONUnitFile(
+                    unit_file=item["unit_file"],
+                    state=item["state"],
+                    preset=item["state"],
+                )
+                data[item["unit_file"]] = uf
+        return data

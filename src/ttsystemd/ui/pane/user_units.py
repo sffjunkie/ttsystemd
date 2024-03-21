@@ -1,8 +1,6 @@
+from textual.app import ComposeResult
 from textual.containers import Container
-from textual.reactive import reactive
-from textual.widgets import Tree
-from ttsystemd.systemd.runtime.types import DBusUnitInfo
-from ttsystemd.ui.table.units import SystemdUnitsTable
+from textual.reactive import Reactive, reactive
 from ttsystemd.ui.widget.sidebar import Sidebar
 
 
@@ -15,17 +13,17 @@ class UserUnitsPane(Container):
         self.sidebar = Sidebar(id="system_units_sidebar")
         self.units_overview = SystemdUnitsTable()
 
-    def compose(self):
+    def compose(self) -> ComposeResult:
         yield self.sidebar
         with Container():
             yield self.units_overview
 
-    def watch_systemd_units(self, systemd_units: DBusUnitInfo):
+    def watch_systemd_units(self, systemd_units: UnitData) -> None:
         if systemd_units is not None:
             self.sidebar.systemd_units = systemd_units
             self.units_overview.systemd_units = systemd_units
 
-    def watch_unit_type(self, unit_type: str):
+    def watch_unit_type(self, unit_type: str) -> None:
         if self.systemd_units is not None:
             self.sidebar.systemd_units = self.systemd_units
             self.units_overview.unit_type = unit_type

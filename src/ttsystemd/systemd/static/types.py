@@ -1,5 +1,5 @@
 from dataclasses import dataclass
-from typing import TypedDict
+from typing import TypedDict, NotRequired, Any
 
 from ttsystemd.systemd.types import UnitType
 
@@ -23,17 +23,17 @@ class JSONUnit:
 
 @dataclass
 class JSONUnitInfo:
-    unit_files: list[JSONUnitFile]
-    units: list[JSONUnit]
+    unit_files: dict[str, JSONUnitFile]
+    units: dict[str, JSONUnit]
 
 
 @dataclass
 class CommandResult:
-    returncode: int = -1
+    returncode: int | None = -1
     text: str | None = None
-    json: str | None = None
+    json: Any | None = None
 
 
 class UnitBackingFile(TypedDict):
-    filename: str
-    contents: str
+    filename: NotRequired[str]
+    contents: NotRequired[str]
