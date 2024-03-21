@@ -21,3 +21,4 @@ class UnitType(StrEnum):
     Swap = "swap"
     Target = "target"
     Timer = "timer"
+    Unknown = ""
