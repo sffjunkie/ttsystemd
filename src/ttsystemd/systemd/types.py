@@ -1,4 +1,7 @@
 from enum import Enum, StrEnum, auto
+from typing import Any
+
+Properties = dict[str, Any]
 
 
 class SessionType(Enum):
