@@ -1,16 +1,15 @@
-from textual.reactive import reactive
-from textual.widget import Widget
 from textual.app import ComposeResult
+from textual.reactive import reactive, Reactive
+from textual.widget import Widget
 from textual.widgets import TabbedContent, TabPane
-
+from ttsystemd.systemd.collect import SystemdData
 from ttsystemd.ui.pane.system_units import SystemUnitsPane
-from ttsystemd.ui.pane.user_units import UserUnitsPane
 from ttsystemd.ui.pane.systemd_info import SystemdInfoPane
-from ttsystemd.systemd.runtime.collect.system import DBusSystemCollector
+from ttsystemd.ui.pane.user_units import UserUnitsPane
 
 
 class Content(Widget):
-    systemd_collector = reactive(None)
+    systemd_data: Reactive[SystemdData | None] = reactive(None)
 
     def __init__(
         self,
@@ -40,8 +39,8 @@ class Content(Widget):
             with TabPane("User Units"):
                 yield self.user_pane
 
-    def watch_systemd_collector(self, collector: DBusSystemCollector) -> None:
-        if collector is not None:
-            self.info_pane.systemd_properties = collector.properties
-            self.system_pane.systemd_units = collector.system_units
-            self.user_pane.systemd_units = collector.session_units
+    def watch_systemd_data(self, data: SystemdData) -> None:
+        if data is not None:
+            self.info_pane.systemd_properties = data.properties
+            self.system_pane.systemd_units = data.system_units
+            self.user_pane.systemd_units = data.session_units
