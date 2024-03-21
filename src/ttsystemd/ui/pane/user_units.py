@@ -59,3 +59,14 @@ class UserUnitsPane(Container):
             self.unit_details.unit = self.systemd_units[item]
             self.unit_details.display = True
 
+    @on(Button.Pressed)
+    def on_button_pressed(self, event: Button.Pressed) -> None:
+        if self.systemd_units is None:
+            return
+
+        if event.button.id == "show_details":
+            unit = self.units_overview.selected_unit
+            if unit is not None:
+                self.units_overview.display = False
+                self.unit_details.unit = self.systemd_units[unit]
+                self.unit_details.display = True
