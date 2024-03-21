@@ -1,14 +1,16 @@
+from collections.abc import Iterable
 from textual.widgets import DataTable
-from textual.reactive import reactive
-from ttsystemd.systemd.runtime.types import DBusUnitInfo
+from textual.widgets.data_table import ColumnKey
+from textual.reactive import reactive, Reactive
 from itertools import islice
+from ttsystemd.systemd.merge import UnitInfo, UnitData
 
 
-class SystemdUnitsTable(DataTable):
-    systemd_units = reactive(None)
-    unit_type = reactive("*")
+class UnitsTable(DataTable):
+    systemd_units: Reactive[UnitData | None] = reactive(None)
+    unit_type: Reactive[str] = reactive("*")
 
-    def __init__(self):
+    def __init__(self) -> None:
         super().__init__(
             cursor_type="row",
             zebra_stripes=True,
@@ -20,29 +22,24 @@ class SystemdUnitsTable(DataTable):
         self.add_column("Load State", key="load_state")
         self.add_column("Sub State", key="sub_state")
 
-        self.sort_key = "name"
+        self.sort_key = ColumnKey("name")
         self.sort_reverse = False
 
-    def watch_systemd_units(self, systemd_units: DBusUnitInfo):
-        if systemd_units is not None:
-            self.fill(systemd_units, self.unit_type)
-
-    def watch_unit_type(self, unit_type: str):
-        if self.systemd_units is not None:
-            self.fill(self.systemd_units, unit_type)
-
-    def on_data_table_header_selected(self, selection: DataTable.HeaderSelected):
+    def on_data_table_header_selected(
+        self, selection: DataTable.HeaderSelected
+    ) -> None:
         if selection.column_index == 0:
             return
 
-        if selection.column_key.value == self.sort_key:
+        if selection.column_key == self.sort_key:
             self.sort_reverse = not self.sort_reverse
         else:
-            self.sort_key = selection.column_key.value
+            self.sort_key = selection.column_key
             self.sort_reverse = False
         self.sort(self.sort_key, reverse=self.sort_reverse)
 
-    def fill(self, systemd_units: DBusUnitInfo, unit_type: str):
+    def fill(self, systemd_units: UnitData, unit_type: str) -> None:
+        units: Iterable[UnitInfo]
         if systemd_units is not None:
             if unit_type != "*":
 
@@ -53,24 +50,34 @@ class SystemdUnitsTable(DataTable):
             else:
                 units = systemd_units.values()
 
-            units = sorted(units, key=lambda unit: unit.unit_name)
+            units = sorted(units, key=lambda unit: unit.name)
 
             self.clear()
-            items = [
-                (
-                    status_symbol(unit.active_state),
-                    self._format_unit_name(unit.unit_name),
-                    unit.unit_type,
-                    unit.active_state,
-                    unit.load_state,
-                    unit.sub_state,
-                )
-                for unit in units
-            ]
-            for item in items:
-                self.add_row(*item, height=None)
+            for unit in units:
+                item = None
+                if unit.dbus_unit is not None:
+                    item = (
+                        status_symbol(unit.dbus_unit.active_state),
+                        self._format_unit_name(unit.name),
+                        unit.dbus_unit.unit_type,
+                        unit.dbus_unit.active_state,
+                        unit.dbus_unit.load_state,
+                        unit.dbus_unit.sub_state,
+                    )
+                elif unit.json_unit is not None:
+                    item = (
+                        status_symbol(unit.json_unit.active),
+                        self._format_unit_name(unit.name),
+                        unit.json_unit.unit_type,
+                        unit.json_unit.active,
+                        unit.json_unit.load,
+                        unit.json_unit.sub,
+                    )
 
-    def _format_unit_name(self, unit_name: str):
+                if item is not None:
+                    self.add_row(*item, height=None, key=unit.name)
+
+    def _format_unit_name(self, unit_name: str) -> str:
         name, _type = unit_name.rsplit(".", maxsplit=1)
 
         if len(name) < 60:
