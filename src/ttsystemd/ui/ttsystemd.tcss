@@ -69,11 +69,22 @@ SystemUnitsPane Container, UserUnitsPane Container {
     padding: 1 2;
 }
 
-SystemdUnitsTable {
-    height: 100vh;
-    width: 100%;
-    scrollbar-gutter: stable;
-    background: $primary-background-darken-1;
+UnitsOverview {
+    layout: grid;
+    grid-size: 1 2;
+    grid-rows: 1fr auto;
+
+    UnitsTable {
+        height: 100%;
+        width: 100%;
+        scrollbar-gutter: stable;
+        background: $primary-background-darken-1;
+        margin-bottom: 1;
+    }
+
+    Horizontal {
+        align: right bottom;
+    }
 }
 
 UnitDetails {
